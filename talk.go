@@ -9,10 +9,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mongodb/mongo-go-driver/bson"
-	talk "github.com/yinzhinyy/talk-to-ilona"
+	"github.com/yinzhinyy/talk-to-ilona/internal"
 )
 
-var db = talk.LoadDB("mongo")
+var db = internal.LoadDB("mongo")
 
 func main() {
 	router := gin.Default()

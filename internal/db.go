@@ -1,4 +1,4 @@
-package talk
+package internal
 
 type DB interface {
 	Save(db string, table string, document interface{}) interface{}
