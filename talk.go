@@ -12,7 +12,7 @@ import (
 	"github.com/yinzhinyy/talk-to-ilona/internal"
 )
 
-var db = internal.LoadDB("mongo")
+var db = internal.LoadDB()
 
 func main() {
 	router := gin.Default()

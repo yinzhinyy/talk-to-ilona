@@ -1,0 +1,15 @@
+[Unit]
+Description=talk
+
+[Service]
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=talk
+Group=ilona
+User=ilona
+EnvironmentFile=/etc/talk/env.sh
+ExecStart=/home/ilona/go/bin/talk-to-ilona
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
