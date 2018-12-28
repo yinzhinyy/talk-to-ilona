@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"sort"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mongodb/mongo-go-driver/bson"
@@ -49,16 +50,48 @@ func simpleLog(c *gin.Context) {
 	c.String(http.StatusOK, message)
 }
 
-func handle(reqBody ReqBody) {
-	doc := bson.M{
-		"userName":   reqBody.FromUserName,
-		"createTime": reqBody.CreateTime,
-		"activity":   reqBody.Content,
-	}
-	db.Save("talk", "activity_log", doc)
-}
+const (
+	Token              = "yinzhinyy"
+	TimeLayout         = "2006-01-02"
+	DBName             = "talk"
+	DBTableActivity    = "activity_log"
+	DBColumnUserName   = "userName"
+	DBColumnCreateDate = "createDate"
+	DBColumnCreateTime = "createTime"
+	DBColumnActivities = "activities"
+	DBColumnActivity   = "activity"
+)
 
-const token = "yinzhinyy"
+func handle(reqBody ReqBody) {
+	userName := reqBody.FromUserName
+	createTime := int64(reqBody.CreateTime)
+	createDate := time.Unix(createTime, 0).Format(TimeLayout)
+	filter := bson.M{
+		DBColumnUserName:   userName,
+		DBColumnCreateDate: createDate,
+	}
+	var record bson.M
+	record = db.Find(DBName, DBTableActivity, filter)
+	activity := bson.M{
+		DBColumnCreateTime: reqBody.CreateTime,
+		DBColumnActivity:   reqBody.Content,
+	}
+	if record == nil {
+		record = bson.M{
+			DBColumnUserName:   userName,
+			DBColumnCreateDate: createDate,
+			DBColumnActivities: bson.A{activity},
+		}
+		db.Save(DBName, DBTableActivity, record)
+	} else {
+		activities := append(record[DBColumnActivities].(bson.A), activity)
+		db.Update(DBName, DBTableActivity, filter, bson.M{
+			"$set": bson.M{
+				DBColumnActivities: activities,
+			},
+		})
+	}
+}
 
 func validateHandler(c *gin.Context) {
 	var message string
@@ -70,7 +103,7 @@ func validateHandler(c *gin.Context) {
 	nonce := c.Query("nonce")
 	echostr := c.Query("echostr")
 
-	list := []string{token, timestamp, nonce}
+	list := []string{Token, timestamp, nonce}
 	sort.Strings(list)
 	sha1 := sha1.New()
 	var srcStr string

@@ -3,10 +3,14 @@ package internal
 import (
 	"log"
 	"os"
+
+	"github.com/mongodb/mongo-go-driver/bson"
 )
 
 type DB interface {
 	Save(db string, table string, document interface{}) interface{}
+	Find(db string, table string, filter interface{}) bson.M
+	Update(db string, table string, filter interface{}, document interface{}) interface{}
 }
 
 func LoadDB() DB {
