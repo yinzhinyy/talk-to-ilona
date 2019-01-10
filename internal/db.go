@@ -7,6 +7,19 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 )
 
+const (
+	TimeLayout         = "2006-01-02"
+	DBName             = "talk"
+	DBTableActivity    = "activity_log"
+	DBColumnUserName   = "userName"
+	DBColumnYear       = "year"
+	DBColumnMonth      = "month"
+	DBColumnDay        = "day"
+	DBColumnCreateTime = "createTime"
+	DBColumnActivities = "activities"
+	DBColumnActivity   = "activity"
+)
+
 type DB interface {
 	Save(db string, table string, document interface{}) interface{}
 	Find(db string, table string, filter interface{}) bson.M

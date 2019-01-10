@@ -11,6 +11,8 @@ sudo cp ${PROJECT_DIR}/configs/* /etc/talk/
 
 sudo mkdir -p /usr/lib/systemd/system
 sudo cp ${PROJECT_DIR}/init/talk.service /usr/lib/systemd/system/
-
 sudo systemctl daemon-reload
+
+go install $1
+
 sudo systemctl restart talk

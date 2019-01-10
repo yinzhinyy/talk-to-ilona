@@ -1,2 +1,3 @@
 TALK_DB_TYPE=mongo
-TALK_DB_MONGO_URL=mongodb://localhost:27017
+TALK_DB_MONGO_URL=mongodb://mongo:27017
+BOOTSTRAP_SERVERS=kafka:9092
