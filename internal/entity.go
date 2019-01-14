@@ -2,6 +2,7 @@ package internal
 
 import "time"
 
+// MessageBody database entity
 type MessageBody struct {
 	UserName   string
 	Year       int

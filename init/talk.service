@@ -10,6 +10,7 @@ User=ilona
 EnvironmentFile=/etc/talk/env.sh
 ExecStart=/home/ilona/go/bin/talk-to-ilona
 Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target

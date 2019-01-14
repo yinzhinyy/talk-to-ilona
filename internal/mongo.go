@@ -9,11 +9,13 @@ import (
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
+// MongoDB sub class of DB
 type MongoDB struct {
 	URL    string
 	Client *mongo.Client
 }
 
+// Save persist entity to mongodb
 func (mongo *MongoDB) Save(db string, table string, document interface{}) interface{} {
 	c, err := getClient(mongo)
 	if err != nil {
@@ -30,6 +32,7 @@ func (mongo *MongoDB) Save(db string, table string, document interface{}) interf
 	return res.InsertedID
 }
 
+// Update update entity
 func (mongo *MongoDB) Update(db string, table string, filter interface{}, document interface{}) interface{} {
 	c, err := getClient(mongo)
 	if err != nil {
@@ -45,6 +48,7 @@ func (mongo *MongoDB) Update(db string, table string, filter interface{}, docume
 	return res.UpsertedID
 }
 
+// Find get entity
 func (mongo *MongoDB) Find(db string, table string, filter interface{}) bson.M {
 	var result bson.M
 	c, err := getClient(mongo)

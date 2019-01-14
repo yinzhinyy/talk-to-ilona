@@ -22,6 +22,8 @@ var (
 	db                 = LoadDB()
 )
 
+// StartConsume creates consumer, pulls data from kafka and saves to database
+// should run in a standalone process
 func StartConsume() {
 	sigchan := make(chan os.Signal, 1)
 
@@ -111,6 +113,7 @@ func saveToDB(message MessageBody) {
 	}
 }
 
+// Produce creates producer if needed and push data to kafka
 func Produce(message *MessageBody) {
 	initProducer()
 	bytes, err := json.Marshal(message)
